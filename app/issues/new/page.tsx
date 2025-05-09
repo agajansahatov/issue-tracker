@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
-import { Button, Callout, Text, TextField } from '@radix-ui/themes';
+import { Button, Callout, TextField } from '@radix-ui/themes';
 import 'easymde/dist/easymde.min.css';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
+import ErrorMessage from '@/app/components/ErrorMessage';
 
 // Dynamically load SimpleMDE on client only
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
@@ -39,7 +40,6 @@ export default function NewIssuePage() {
 				</Callout.Root>
 			)}
 			<form
-				className='space-y-5'
 				onSubmit={handleSubmit(async (data) => {
 					try {
 						await axios.post('/api/issues', data);
@@ -49,26 +49,26 @@ export default function NewIssuePage() {
 					}
 				})}
 			>
-				<TextField.Root placeholder='Title' {...register('title')} />
-				{errors.title && (
-					<Text color='red' as='p' className='pb-3'>
-						{errors.title.message}
-					</Text>
-				)}
-				<Controller
-					name='description'
-					control={control}
-					render={({ field }) => (
-						<SimpleMDE placeholder='Description' {...field} />
-					)}
-				/>
-				{errors.description && (
-					<Text color='red' as='p' className='pb-3'>
-						{errors.description.message}
-					</Text>
-				)}
+				<ul className='space-y-5'>
+					<li>
+						<TextField.Root placeholder='Title' {...register('title')} />
+						<ErrorMessage>{errors.title?.message}</ErrorMessage>
+					</li>
+					<li>
+						<Controller
+							name='description'
+							control={control}
+							render={({ field }) => (
+								<SimpleMDE placeholder='Description' {...field} />
+							)}
+						/>
 
-				<Button className='!cursor-pointer'>Submit New Issue</Button>
+						<ErrorMessage>{errors.description?.message}</ErrorMessage>
+					</li>
+					<li>
+						<Button className='!cursor-pointer'>Submit New Issue</Button>
+					</li>
+				</ul>
 			</form>
 		</div>
 	);
