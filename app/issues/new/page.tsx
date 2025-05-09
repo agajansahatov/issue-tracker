@@ -33,6 +33,17 @@ export default function NewIssuePage() {
 	const [error, setError] = useState('');
 	const [isSubmitting, setSubmitting] = useState(false);
 
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			setSubmitting(true);
+			await axios.post('/api/issues', data);
+			router.push('/issues');
+		} catch (error) {
+			setSubmitting(false);
+			setError(`An unexpected error happened: ${error}`);
+		}
+	});
+
 	return (
 		<div className='max-w-xl'>
 			{error && (
@@ -40,18 +51,7 @@ export default function NewIssuePage() {
 					{error}
 				</Callout.Root>
 			)}
-			<form
-				onSubmit={handleSubmit(async (data) => {
-					try {
-						setSubmitting(true);
-						await axios.post('/api/issues', data);
-						router.push('/issues');
-					} catch (error) {
-						setSubmitting(false);
-						setError(`An unexpected error happened: ${error}`);
-					}
-				})}
-			>
+			<form onSubmit={onSubmit}>
 				<ul className='space-y-5'>
 					<li>
 						<TextField.Root placeholder='Title' {...register('title')} />
