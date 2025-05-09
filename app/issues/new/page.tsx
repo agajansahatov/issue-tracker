@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button, Callout, Text, TextField } from '@radix-ui/themes';
 import 'easymde/dist/easymde.min.css';
 import { useForm, Controller } from 'react-hook-form';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/validationSchemas';
@@ -44,10 +44,8 @@ export default function NewIssuePage() {
 					try {
 						await axios.post('/api/issues', data);
 						router.push('/issues');
-					} catch (error: any) {
-						let errorMessage = error.response.data.title._errors[0];
-						if (!errorMessage) errorMessage = error;
-						setError(`An unexpected error happened: ${errorMessage}`);
+					} catch (error) {
+						setError(`An unexpected error happened: ${error}`);
 					}
 				})}
 			>
