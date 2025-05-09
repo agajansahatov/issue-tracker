@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
-import { Button, Callout, TextField } from '@radix-ui/themes';
+import { Button, Callout, Spinner, TextField } from '@radix-ui/themes';
 import 'easymde/dist/easymde.min.css';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
@@ -31,6 +31,7 @@ export default function NewIssuePage() {
 	});
 
 	const [error, setError] = useState('');
+	const [isSubmitting, setSubmitting] = useState(false);
 
 	return (
 		<div className='max-w-xl'>
@@ -42,9 +43,11 @@ export default function NewIssuePage() {
 			<form
 				onSubmit={handleSubmit(async (data) => {
 					try {
+						setSubmitting(true);
 						await axios.post('/api/issues', data);
 						router.push('/issues');
 					} catch (error) {
+						setSubmitting(false);
 						setError(`An unexpected error happened: ${error}`);
 					}
 				})}
@@ -66,7 +69,9 @@ export default function NewIssuePage() {
 						<ErrorMessage>{errors.description?.message}</ErrorMessage>
 					</li>
 					<li>
-						<Button className='!cursor-pointer'>Submit New Issue</Button>
+						<Button className='!cursor-pointer' disabled={isSubmitting}>
+							Submit New Issue {isSubmitting && <Spinner />}
+						</Button>
 					</li>
 				</ul>
 			</form>
