@@ -18,7 +18,7 @@ const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
-export default function NewIssuePage() {
+const NewIssuePage = () => {
 	const router = useRouter();
 
 	const {
@@ -77,4 +77,6 @@ export default function NewIssuePage() {
 			</form>
 		</div>
 	);
-}
+};
+
+export default NewIssuePage;
