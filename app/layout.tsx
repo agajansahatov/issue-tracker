@@ -3,7 +3,7 @@ import './theme-config.css';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { Theme } from '@radix-ui/themes';
+import { Container, Theme } from '@radix-ui/themes';
 import NavBar from './NavBar';
 
 const geistSans = Geist({
@@ -33,7 +33,9 @@ export default function RootLayout({
 			>
 				<Theme accentColor='violet' appearance='light'>
 					<NavBar />
-					<main className='p-5'>{children}</main>
+					<Container>
+						<main className='p-5'>{children}</main>
+					</Container>
 				</Theme>
 			</body>
 		</html>
