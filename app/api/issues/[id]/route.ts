@@ -28,12 +28,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     return NextResponse.json(updatedIssue);
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }>}) {
-    //This line is just for making the compiler
-    // ignore the unused request object,
-    // we cannot also remove it, because nextjs requires it
-    await request.json(); 
-    
+export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }>}) {
     const { id } = await params;
     const issue = await prisma.issue.findUnique({
         where: {id: parseInt(id)}
