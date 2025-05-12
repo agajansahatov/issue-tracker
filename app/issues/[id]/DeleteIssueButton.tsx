@@ -26,14 +26,17 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
 							Cancel
 						</Button>
 					</AlertDialog.Cancel>
-					<AlertDialog.Action
-						onClick={async () => {
-							await axios.delete('/api/issues/' + issueId);
-							router.push('/issues');
-							router.refresh();
-						}}
-					>
-						<Button color='red'>Delete</Button>
+					<AlertDialog.Action>
+						<Button
+							color='red'
+							onClick={async () => {
+								await axios.delete('/api/issues/' + issueId);
+								router.push('/issues');
+								router.refresh();
+							}}
+						>
+							Delete
+						</Button>
 					</AlertDialog.Action>
 				</Flex>
 			</AlertDialog.Content>
