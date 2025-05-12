@@ -27,3 +27,24 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
     return NextResponse.json(updatedIssue);
 }
+
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }>}) {
+    //This line is just for making the compiler
+    // ignore the unused request object,
+    // we cannot also remove it, because nextjs requires it
+    await request.json(); 
+    
+    const { id } = await params;
+    const issue = await prisma.issue.findUnique({
+        where: {id: parseInt(id)}
+    });
+
+    if(!issue)
+        return NextResponse.json({ error: "Invalid issue" }, { status: 404 });
+
+    await prisma.issue.delete({
+        where: { id: issue.id }
+    });
+
+    return NextResponse.json({});
+}
