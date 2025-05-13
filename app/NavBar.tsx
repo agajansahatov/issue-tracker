@@ -5,11 +5,12 @@ import React from 'react';
 import { AiFillBug } from 'react-icons/ai';
 import classNames from 'classnames';
 import { useSession } from 'next-auth/react';
-import { Box, Container, Flex } from '@radix-ui/themes';
+import { Avatar, Box, Container, Flex } from '@radix-ui/themes';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 const NavBar = () => {
 	const currentPath = usePathname();
-	const { status } = useSession();
+	const { status, data: session } = useSession();
 
 	const links = [
 		{ label: 'Dashboard', href: '/' },
@@ -17,7 +18,7 @@ const NavBar = () => {
 	];
 
 	return (
-		<nav className='order-b border-zinc-200 mb-5 px-5 py-3'>
+		<nav className='border-b border-zinc-200 mb-5 px-5 py-3'>
 			<Container>
 				<Flex justify='between'>
 					<Flex align='center' gap='3'>
@@ -43,7 +44,27 @@ const NavBar = () => {
 					</Flex>
 					<Box>
 						{status === 'authenticated' && (
-							<Link href='/api/auth/signout'>Logout</Link>
+							<DropdownMenu.Root>
+								<DropdownMenu.Trigger asChild>
+									<Avatar
+										src={session.user!.image!}
+										fallback='?'
+										size='2'
+										radius='full'
+										className='cursor-pointer'
+									/>
+								</DropdownMenu.Trigger>
+								<DropdownMenu.Content className='bg-white rounded-md shadow-lg p-2 border border-zinc-200'>
+									<DropdownMenu.Label className='px-2 py-1 text-sm text-gray-600'>
+										{session.user!.email}
+									</DropdownMenu.Label>
+									<Link href='/api/auth/signout'>
+										<DropdownMenu.Item className='px-2 py-1 rounded'>
+											Logout
+										</DropdownMenu.Item>
+									</Link>
+								</DropdownMenu.Content>
+							</DropdownMenu.Root>
 						)}
 						{status === 'unauthenticated' && (
 							<Link href='/api/auth/signin'>Login</Link>
