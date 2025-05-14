@@ -3,7 +3,7 @@ import { Button } from '@/app/components';
 import Link from 'next/link';
 import React from 'react';
 
-const IssuesToolbar = () => {
+const NewIssueButton = () => {
 	return (
 		<div className='my-5'>
 			<Button>
@@ -13,4 +13,4 @@ const IssuesToolbar = () => {
 	);
 };
 
-export default IssuesToolbar;
+export default NewIssueButton;

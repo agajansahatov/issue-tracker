@@ -1,14 +1,21 @@
 import { Table } from '@radix-ui/themes';
 import React from 'react';
 import { Skeleton } from '@/app/components';
-import IssuesToolbar from './IssuesToolbar';
+import authOptions from '@/app/auth/authOptions';
+import { getServerSession } from 'next-auth';
 
-const LoadingIssuesPage = () => {
+const LoadingIssuesPage = async () => {
+	const session = await getServerSession(authOptions);
+
 	const issues = [1, 2, 3, 4, 5];
 
 	return (
 		<>
-			<IssuesToolbar />
+			{session && (
+				<div className='my-5'>
+					<Skeleton height='1.5rem' width='5rem' />
+				</div>
+			)}
 
 			<Table.Root variant='surface'>
 				<Table.Header>
