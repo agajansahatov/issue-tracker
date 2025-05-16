@@ -5,9 +5,10 @@ import { Table } from '@radix-ui/themes';
 import IssueActions from './IssueActions';
 import { Issue, Status } from '@prisma/client';
 import { ArrowUpIcon } from '@radix-ui/react-icons';
+import Pagination from '@/app/components/Pagination';
 
 interface Props {
-	searchParams: Promise<{ status: Status; orderBy: keyof Issue }>;
+	searchParams: Promise<{ status: Status; orderBy: keyof Issue; page: string }>;
 }
 
 const IssuesPage = async ({ searchParams }: Props) => {
@@ -26,16 +27,25 @@ const IssuesPage = async ({ searchParams }: Props) => {
 	const statuses = Object.values(Status);
 
 	const statusValidated = statuses.includes(status) ? status : undefined;
+	const where = { status: statusValidated };
+
 	const orderBy = columns
 		.map((column) => column.value)
 		.includes(queryParams.orderBy)
 		? { [queryParams.orderBy]: 'asc' }
 		: undefined;
 
+	const page = parseInt(queryParams.page) || 1;
+	const pageSize = 10;
+
 	const issues = await prisma.issue.findMany({
-		where: { status: statusValidated },
+		where,
 		orderBy,
+		skip: (page - 1) * pageSize,
+		take: pageSize,
 	});
+
+	const issueCount = await prisma.issue.count({ where });
 
 	return (
 		<>
@@ -86,6 +96,12 @@ const IssuesPage = async ({ searchParams }: Props) => {
 					))}
 				</Table.Body>
 			</Table.Root>
+			<Pagination
+				pageSize={pageSize}
+				currentPage={page}
+				itemCount={issueCount}
+				className='py-5'
+			/>
 		</>
 	);
 };
