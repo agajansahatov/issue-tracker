@@ -10,7 +10,7 @@ const IssueActions = async () => {
 	const session = await getServerSession(authOptions);
 
 	return (
-		<Flex mb='5' justify='between'>
+		<Flex justify='between'>
 			<IssueStatusFilter />
 			{session && (
 				<Button>

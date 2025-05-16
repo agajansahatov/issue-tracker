@@ -14,10 +14,9 @@ interface Props {
 	itemCount: number;
 	pageSize: number;
 	currentPage: number;
-	className?: string;
 }
 
-const Pagination = ({ itemCount, pageSize, currentPage, className }: Props) => {
+const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 
@@ -31,7 +30,7 @@ const Pagination = ({ itemCount, pageSize, currentPage, className }: Props) => {
 	};
 
 	return (
-		<Flex align='center' gap='2' className={className || ''}>
+		<Flex align='center' gap='2'>
 			<Button
 				color='gray'
 				variant='soft'
