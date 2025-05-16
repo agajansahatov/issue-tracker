@@ -9,7 +9,7 @@ interface Props extends React.ComponentProps<typeof RadixButton> {
 
 const Button = ({ className, children, ...rest }: Props) => {
 	return (
-		<RadixButton className={`!cursor-pointer ${className}`} {...rest}>
+		<RadixButton className={`${className}`} {...rest}>
 			<span>{children}</span>
 		</RadixButton>
 	);
