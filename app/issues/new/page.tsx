@@ -1,14 +1,13 @@
-'use client';
-import dynamic from 'next/dynamic';
-import IssueFormSkeleton from '../_components/IssueFormSkeleton';
-
-const IssueForm = dynamic(() => import('@/app/issues/_components/IssueForm'), {
-	ssr: false,
-	loading: () => <IssueFormSkeleton />,
-});
+import { Metadata } from 'next';
+import NewIssueLayout from './NewIssueLayout';
 
 const NewIssuePage = () => {
-	return <IssueForm />;
+	return <NewIssueLayout />;
 };
 
 export default NewIssuePage;
+
+export const metadata: Metadata = {
+	title: 'Issue Tracker - New Issue',
+	description: 'View all project issues',
+};
